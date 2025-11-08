@@ -3,8 +3,8 @@ import { useInView } from "react-intersection-observer";
 import { useDebouncedResize } from "../hooks/useDebouncedResize";
 import { LoadingPhoto } from "./Loading";
 
-export function getColumns() {
-  return Math.round(window.innerWidth / 200)
+export function getColumns(fixedSize: number) {
+  return Math.round(window.innerWidth / fixedSize)
 }
 
 type ImageWithSize = {
@@ -21,7 +21,8 @@ export function getRelativeImageHeight(image: ImageWithSize, targetWidth: number
 
 export function generateImageColumns<T extends ImageWithSize>(
   photos: T[],
-  columnCount: number
+  columnCount: number,
+  columnSize: number,
 ): T[][] {
   const columnHeights = Array(columnCount).fill(0);
   const columns: T[][] = Array.from({ length: columnCount }, () => []);
@@ -32,7 +33,7 @@ export function generateImageColumns<T extends ImageWithSize>(
 
     columns[indexOfSmallestHeight].push(photo);
 
-    const height = getRelativeImageHeight(photo, 200);
+    const height = getRelativeImageHeight(photo, columnSize);
     columnHeights[indexOfSmallestHeight] = smallestHeight + height;
   });
 
@@ -41,10 +42,11 @@ export function generateImageColumns<T extends ImageWithSize>(
 
 type MasonryColumnProps = {
   children?: React.ReactNode;
+  lazyLoad?: boolean
   onLazy: () => void;
 };
 
-export function MasonryColumn({ children, onLazy }: MasonryColumnProps) {
+export function MasonryColumn({ children, lazyLoad, onLazy }: MasonryColumnProps) {
   const { ref, inView } = useInView({ threshold: 0 })
 
   useEffect(() => {
@@ -58,25 +60,26 @@ export function MasonryColumn({ children, onLazy }: MasonryColumnProps) {
     className="flex flex-col grow shrink basis-[200px] min-w-0 gap-0"
   >
     {children}
-    <LoadingPhoto ref={ref} />
+    {lazyLoad && <LoadingPhoto ref={ref} />}
   </div>
 }
 
 type MasonryProps<T extends ImageWithSize> = {
   photos: T[];
+  size: number
   children: (imageColumns: T[][], columnCount: number) => React.ReactNode;
 };
 
-export function Masonry<T extends ImageWithSize>({ photos, children }: MasonryProps<T>) {
-  const [columnCount, setColumnCount] = useState(getColumns())
+export function Masonry<T extends ImageWithSize>({ photos, size, children }: MasonryProps<T>) {
+  const [columnCount, setColumnCount] = useState(getColumns(size))
 
   const setBodyWidth = () => {
-    // document.body.style.setProperty('width', `${window.innerWidth}px`);
-    // document.body.style.setProperty('overflow-x', 'hidden');
+    document.body.style.setProperty('width', `${window.innerWidth}px`);
+    document.body.style.setProperty('overflow-x', 'hidden');
   };
 
   useDebouncedResize(() => {
-    setColumnCount(getColumns());
+    setColumnCount(getColumns(size));
     setBodyWidth();
   }, 100);
 
@@ -90,8 +93,8 @@ export function Masonry<T extends ImageWithSize>({ photos, children }: MasonryPr
   }, []);
 
   const imageColumns = useMemo(() => {
-    return generateImageColumns(photos, columnCount)
-  }, [photos, columnCount])
+    return generateImageColumns(photos, columnCount, size)
+  }, [photos, columnCount, size])
 
   return <div
     className='flex justify-center flex-nowrap overflow-x-clip'

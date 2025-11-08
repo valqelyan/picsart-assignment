@@ -108,7 +108,6 @@ export function VirtualListViewport<T extends WithDimensions>({
   }
 
   const totalHeight = prefix.at(-1) ?? 0
-  console.log('--')
 
   return (
     <div className='relative' style={{ height: `${totalHeight}px` }}>

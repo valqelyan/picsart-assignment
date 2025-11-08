@@ -11,7 +11,7 @@ export default function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const q = searchParams.get("q") || "";
   const debouncedSearchTerm = useDebounce(q, 300);
-  const { data, isLoading, fetchNextPage, error } = usePhotosInfiniteQuery(debouncedSearchTerm)
+  const { data, hasNextPage, isLoading, fetchNextPage, error } = usePhotosInfiniteQuery(debouncedSearchTerm, 10)
 
   const photos = data?.pages.map(value => value.photos).flat()
 
@@ -28,9 +28,11 @@ export default function Home() {
 
     {isLoading && <Loading />}
 
-    {(!error && photos) && <Masonry photos={photos}>
+    {(!error && photos) && <Masonry photos={photos} size={264}>
       {(photoColumns, columns) => photoColumns.map((columnPhotos, index) => (
-        <MasonryColumn key={index} onLazy={fetchNextPage}>
+        <MasonryColumn key={index} lazyLoad={hasNextPage} onLazy={() => {
+          fetchNextPage()
+        }}>
           <VirtualListViewport
             list={columnPhotos}
             component={MasonryPhoto}
