@@ -3,50 +3,53 @@ import { describe, it, expect } from "vitest";
 import { Photo } from "../components/Photo";
 
 describe("Photo component", () => {
-  it("renders image with correct src and alt", () => {
-    render(<Photo src="test.jpg" alt="test image" />);
-    const img = screen.getByAltText("test image") as HTMLImageElement;
+  const src = "https://example.com/image.jpg";
+  const alt = "Example Image";
 
+  it("renders an img with correct src and alt", () => {
+    render(<Photo src={src} alt={alt} />);
+    const img = screen.getByAltText(alt);
     expect(img).toBeInTheDocument();
-    expect(img.src).toContain("test.jpg");
+    expect(img).toHaveAttribute("src", src);
   });
 
-  it("applies provided width and height", () => {
+  it("renders children inside the container", () => {
     render(
-      <Photo
-        src="test.jpg"
-        alt="test image"
-        width={200}
-        height={100}
-      />
-    );
-    const img = screen.getByAltText("test image");
-
-    expect(img).toHaveAttribute("width", "200");
-    expect(img).toHaveAttribute("height", "100");
-  });
-
-  it("applies background color and border radius", () => {
-    render(
-      <Photo
-        src="test.jpg"
-        alt="test image"
-        color="red"
-      />
-    );
-    const img = screen.getByAltText("test image");
-    expect(img).toHaveStyle({
-      backgroundColor: "red",
-      borderRadius: "16px",
-    });
-  });
-
-  it("renders children correctly", () => {
-    render(
-      <Photo src="test.jpg" alt="test image">
-        <span>Child Text</span>
+      <Photo src={src} alt={alt}>
+        <span data-testid="child">Child</span>
       </Photo>
     );
-    expect(screen.getByText("Child Text")).toBeInTheDocument();
+    expect(screen.getByTestId("child")).toBeInTheDocument();
+  });
+
+  it("applies width and height props to the img element", () => {
+    render(<Photo src={src} alt={alt} width={300} height="200" />);
+    const img = screen.getByAltText(alt);
+    expect(img).toHaveAttribute("width", "300");
+    expect(img).toHaveAttribute("height", "200");
+  });
+
+  it("applies backgroundColor style when color prop is provided", () => {
+    render(<Photo src={src} alt={alt} color="red" />);
+    const img = screen.getByAltText(alt);
+    expect(img).toHaveStyle({ backgroundColor: "red" });
+  });
+
+  it("does not apply backgroundColor style when color prop is not provided", () => {
+    render(<Photo src={src} alt={alt} />);
+    const img = screen.getByAltText(alt);
+    expect(img).not.toHaveStyle({ backgroundColor: "red" });
+  });
+
+  it("img has expected CSS classes", () => {
+    render(<Photo src={src} alt={alt} />);
+    const img = screen.getByAltText(alt);
+    expect(img).toHaveClass("object-cover", "rounded-2xl", "w-full", "h-full");
+  });
+
+  it("container div has expected CSS classes", () => {
+    render(<Photo src={src} alt={alt} />);
+    const container = screen.getByAltText(alt).parentElement;
+    expect(container).toHaveClass("relative", "p-2.5", "h-full");
   });
 });

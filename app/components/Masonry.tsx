@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useDebouncedResize } from "~/hooks/useDebouncedResize";
+import { useDebouncedResize } from "../hooks/useDebouncedResize";
 import { LoadingPhoto } from "./Loading";
 
 function getColumns() {
@@ -16,14 +16,14 @@ type ImageWithSize = {
   height: number;
 };
 
-const getRelativeImageHeight = (image: ImageWithSize, targetWidth: number): number => {
+export function getRelativeImageHeight(image: ImageWithSize, targetWidth: number): number {
   const { width, height } = image;
   const widthQuotient = targetWidth / width;
   const relativeHeight = widthQuotient * height;
   return relativeHeight;
 };
 
-function generateImageColumns<T extends ImageWithSize>(
+export function generateImageColumns<T extends ImageWithSize>(
   photos: T[],
   columnCount: number
 ): T[][] {
@@ -95,11 +95,7 @@ export function Masonry<T extends ImageWithSize>({ photos, children }: MasonryPr
   }, []);
 
   const imageColumns = useMemo(() => {
-    if (photos) {
-      return generateImageColumns(photos, columnCount)
-    }
-
-    return []
+    return generateImageColumns(photos, columnCount)
   }, [photos, columnCount])
 
   return <div
