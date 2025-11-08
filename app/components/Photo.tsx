@@ -1,40 +1,26 @@
-import { useState, useEffect, useRef, useLayoutEffect } from "react";
-
 type Props = {
   children?: React.ReactNode;
   alt: string;
   src: string;
-  smallSrc: string;
   width?: number | string;
   height?: number | string;
   color?: string;
 };
 
-export function Photo({ children, alt, src, smallSrc, width, height, color }: Props) {
+export function Photo({ children, alt, src, width, height, color }: Props) {
   return (
     <div
-      style={{
-        position: "relative",
-        padding: 10,
-        height: '100%',
-      }}
+      className="relative p-2.5 h-full"
     >
       <img
         src={src}
         alt={alt}
-        style={{
-          objectFit: "cover",
-          backgroundColor: color,
-          borderRadius: '16px',
-          height: '100%',
-          width: '100%',
-        }}
+        className="object-cover rounded-2xl w-full h-full"
         width={width}
         height={height}
+        style={color ? { backgroundColor: color } : undefined}
       />
       {children}
     </div>
   );
 }
-
-

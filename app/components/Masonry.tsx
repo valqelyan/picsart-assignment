@@ -11,36 +11,45 @@ function getColumns() {
   return Math.round(window.innerWidth / 200)
 }
 
-const getRelativeImageHeight = (image, targetWidth) => {
-  const { width, height } = image
-  const widthQuotient = targetWidth / width
-  const relativeHeight = widthQuotient * height
+type ImageWithSize = {
+  width: number;
+  height: number;
+};
 
-  return relativeHeight
-}
+const getRelativeImageHeight = (image: ImageWithSize, targetWidth: number): number => {
+  const { width, height } = image;
+  const widthQuotient = targetWidth / width;
+  const relativeHeight = widthQuotient * height;
+  return relativeHeight;
+};
 
-function generateImageColumns(photos, columnCount) {
-  const columnHeights = Array(columnCount).fill(0)
-  const columns = [...Array(columnCount)].map(() => [])
+function generateImageColumns<T extends ImageWithSize>(
+  photos: T[],
+  columnCount: number
+): T[][] {
+  const columnHeights = Array(columnCount).fill(0);
+  const columns: T[][] = Array.from({ length: columnCount }, () => []);
 
   photos.forEach(photo => {
-    const smallestHeight = Math.min(...columnHeights)
-    const indexOfSmallestHeight = columnHeights.indexOf(
-      Math.min(...columnHeights)
-    )
+    const smallestHeight = Math.min(...columnHeights);
+    const indexOfSmallestHeight = columnHeights.indexOf(smallestHeight);
 
-    const smallestColumn = columns[indexOfSmallestHeight]
-    smallestColumn.push(photo)
+    columns[indexOfSmallestHeight].push(photo);
 
-    const height = getRelativeImageHeight(photo, 200)
+    const height = getRelativeImageHeight(photo, 200);
+    columnHeights[indexOfSmallestHeight] = smallestHeight + height;
+  });
 
-    columnHeights[indexOfSmallestHeight] = smallestHeight + height
-  })
-
-  return columns
+  return columns;
 }
 
-export function MasonryColumn({ photos, children, onLazy }) {
+type MasonryColumnProps<T extends ImageWithSize> = {
+  photos: T[];
+  children?: React.ReactNode;
+  onLazy: () => void;
+};
+
+export function MasonryColumn<T extends ImageWithSize>({ photos, children, onLazy }: MasonryColumnProps<T>) {
   const { ref, inView } = useInView({ threshold: 0 })
 
   useEffect(() => {
@@ -50,13 +59,20 @@ export function MasonryColumn({ photos, children, onLazy }) {
 
   }, [inView])
 
-  return <div style={{ flex: '1 1 200px', gap: 0, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+  return <div
+    className="flex flex-col grow shrink basis-[200px] min-w-0 gap-0"
+  >
     {children}
     <LoadingPhoto ref={ref} />
   </div>
 }
 
-export function Masonry({ photos, children }) {
+type MasonryProps<T extends ImageWithSize> = {
+  photos: T[];
+  children: (imageColumns: T[][], columnCount: number) => React.ReactNode;
+};
+
+export function Masonry<T extends ImageWithSize>({ photos, children }: MasonryProps<T>) {
   const [columnCount, setColumnCount] = useState(getColumns())
 
   const setBodyWidth = () => {
@@ -86,13 +102,9 @@ export function Masonry({ photos, children }) {
     return []
   }, [photos, columnCount])
 
-  return <div style={{
-    display: 'flex',
-    gap: 0,
-    justifyContent: 'center',
-    flexWrap: 'nowrap',
-    overflowX: 'clip'
-  }}>
+  return <div
+    className='flex justify-center flex-nowrap overflow-x-clip'
+  >
     {children(imageColumns, columnCount)}
   </div>
 }

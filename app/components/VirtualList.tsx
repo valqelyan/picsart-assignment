@@ -2,6 +2,7 @@ import React, { useMemo, useState, type ReactNode } from "react";
 import { useDebouncedResize } from "~/hooks/useDebouncedResize";
 
 type WithDimensions = {
+  id: string | number;
   width: number;
   height: number;
 };
@@ -81,14 +82,13 @@ export function VirtualListViewport<T extends WithDimensions>({
   const totalHeight = prefix.at(-1) ?? 0
 
   return (
-    <div style={{ position: "relative", height: `${totalHeight}px` }}>
+    <div className='relative' style={{ height: `${totalHeight}px` }}>
       {list.slice(startIndex, endIndex + 1).map((photo, index) => {
         return (
           <div
             key={photo.id}
+            className='absolute w-full'
             style={{
-              position: "absolute",
-              width: '100%',
               height: onPreComputeHeight(photo),
               top:
                 (prefix[startIndex + index] ?? 0) - onPreComputeHeight(photo),

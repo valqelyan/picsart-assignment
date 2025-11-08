@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
-export function useDebouncedResize(callback, delay = 200) {
-  const timer = useRef(null);
+export function useDebouncedResize(callback: () => void, delay = 200) {
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     function handleResize() {
@@ -19,4 +19,3 @@ export function useDebouncedResize(callback, delay = 200) {
     };
   }, [callback, delay]);
 }
-

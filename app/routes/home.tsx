@@ -1,6 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 import { Link } from "react-router";
 import { Masonry, MasonryColumn } from '~/components/Masonry'
 import { Photo } from '~/components/Photo'
@@ -51,12 +50,11 @@ export default function Home() {
   const { data, isLoading, fetchNextPage, error } = useInfiniteQuery<PexelsResponse>({
     queryKey: ["pexelsCuratedPhotos", debouncedSearchTerm],
     queryFn: ({ pageParam = null }) => fetchCuratedPhotos(pageParam, debouncedSearchTerm),
+    initialPageParam: null,
     getNextPageParam: (lastPage) => {
       return lastPage.next_page
     },
   });
-
-  const { ref: inViewRef, inView } = useInView()
 
   const scrollY = useScrollPosition();
 
@@ -75,7 +73,7 @@ export default function Home() {
 
     {isLoading && <Loading />}
 
-    {(!error) && <Masonry photos={photos}>
+    {(!error && photos) && <Masonry photos={photos}>
       {(photoColumns, columns) => photoColumns.map((columnPhotos, index) => (
         <MasonryColumn key={index} photos={columnPhotos} onLazy={fetchNextPage}>
           <VirtualListViewport
@@ -92,7 +90,6 @@ export default function Home() {
             {columnPhotos.map(photo => (
               <Photo
                 key={photo.id}
-                smallSrc={photo.src.tiny}
                 color={photo.avg_color}
                 src={photo.src.medium}
                 alt={photo.alt}
