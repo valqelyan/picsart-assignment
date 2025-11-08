@@ -1,6 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft } from "lucide-react";
+import { PhotoDetails } from "~/components/PhotoDetails";
 
 const PEXELS_API_KEY = "pdrmAIgN3EAQTZ7zrnWiLdXhQ2pcuIQUSj3pYQKWQaJ4Nd6p84SnjNZa";
 
@@ -32,15 +33,11 @@ export default function ImagePage() {
         <ChevronLeft size={22} />
         Back
       </Link>
-      <h1 style={{
-        fontFamily: `"Playfair Display", serif`,
-        fontSize: 32,
-        marginBottom: '.2rem'
-      }}>{photo.photographer}</h1>
-      <p style={{
-        marginBottom: '1rem'
-      }}>by {photo.photographer}</p>
-      <img src={photo.src.large} alt={photo.photographer} style={{ borderRadius: 16 }} />
+
+      <PhotoDetails
+        photographer={photo.photographer}
+        src={photo.src.large}
+      />
     </div>
   );
 }
