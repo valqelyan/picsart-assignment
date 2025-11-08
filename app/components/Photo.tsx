@@ -16,6 +16,7 @@ export function Photo({ children, alt, src, smallSrc, width, height, color }: Pr
       style={{
         position: "relative",
         padding: 10,
+        height: '100%',
       }}
     >
       <img

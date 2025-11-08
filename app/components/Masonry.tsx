@@ -59,9 +59,24 @@ export function MasonryColumn({ photos, children, onLazy }) {
 export function Masonry({ photos, children }) {
   const [columnCount, setColumnCount] = useState(getColumns())
 
+  const setBodyWidth = () => {
+    document.body.style.setProperty('width', `${window.innerWidth}px`);
+    document.body.style.setProperty('overflow-x', 'hidden');
+  };
+
   useDebouncedResize(() => {
-    setColumnCount(getColumns())
-  }, 100)
+    setColumnCount(getColumns());
+    setBodyWidth();
+  }, 100);
+
+  useEffect(() => {
+    setBodyWidth();
+
+    return () => {
+      document.body.style.removeProperty('width');
+      document.body.style.removeProperty('overflow-x');
+    };
+  }, []);
 
   const imageColumns = useMemo(() => {
     if (photos) {

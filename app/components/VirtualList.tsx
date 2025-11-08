@@ -1,4 +1,5 @@
-import React, { useMemo, type ReactNode } from "react";
+import React, { useMemo, useState, type ReactNode } from "react";
+import { useDebouncedResize } from "~/hooks/useDebouncedResize";
 
 type WithDimensions = {
   width: number;
@@ -56,6 +57,12 @@ export function VirtualListViewport<T extends WithDimensions>({
   children,
   offset,
 }: Props<T>) {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useDebouncedResize(() => {
+    setWindowWidth(window.innerWidth);
+  }, 100);
+
   const prefix = useMemo(() => {
     const arr: number[] = [];
     list.reduce((acc, item, i) => {
@@ -63,7 +70,7 @@ export function VirtualListViewport<T extends WithDimensions>({
       return arr[i];
     }, 0);
     return arr;
-  }, [list, onPreComputeHeight]);
+  }, [list, onPreComputeHeight, windowWidth]);
 
   const startIndex = findStartIndex(prefix, offset - overscanPixels);
   const endIndex = findEndIndex(prefix, offset, window.innerHeight + overscanPixels)
@@ -71,10 +78,10 @@ export function VirtualListViewport<T extends WithDimensions>({
   const childrenArray = React.Children.toArray(children);
   const visibleChildren = childrenArray.slice(startIndex, endIndex + 1);
 
-  const passedHeight = startIndex === 0 ? 0 : prefix[startIndex - 1];
+  const totalHeight = prefix.at(-1) ?? 0
 
   return (
-    <div style={{ position: "relative", height: `${prefix.at(-1) ?? 0}px` }}>
+    <div style={{ position: "relative", height: `${totalHeight}px` }}>
       {list.slice(startIndex, endIndex + 1).map((photo, index) => {
         return (
           <div
