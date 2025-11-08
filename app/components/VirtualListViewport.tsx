@@ -1,5 +1,5 @@
-import React, { useMemo, useState, type ReactNode } from "react";
-import { useDebouncedResize } from "~/hooks/useDebouncedResize";
+import React, { useMemo, useState } from "react";
+import { useDebouncedResize } from "../hooks/useDebouncedResize";
 
 type WithDimensions = {
   id: string | number;
@@ -7,12 +7,21 @@ type WithDimensions = {
   height: number;
 };
 
+export type VirtualizedComponentProps<T> = {
+  className: string
+  style: React.CSSProperties
+  value: T
+  index: number
+}
+
 type Props<T extends WithDimensions> = {
   list: T[];
-  onPreComputeHeight: (item: T) => number;
-  overscanPixels?: number;
-  children: ReactNode;
-  offset: number;
+  onPreComputeHeight: (item: T) => number
+  component: (
+    props: VirtualizedComponentProps<T>
+  ) => React.ReactElement;
+  overscanPixels?: number
+  offset: number
 };
 
 function findStartIndex(prefix: number[], offset: number): number {
@@ -53,9 +62,9 @@ function findEndIndex(
 
 export function VirtualListViewport<T extends WithDimensions>({
   list,
+  component: ComponentProps,
   onPreComputeHeight,
   overscanPixels = 300,
-  children,
   offset,
 }: Props<T>) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -67,7 +76,7 @@ export function VirtualListViewport<T extends WithDimensions>({
   const prefix = useMemo(() => {
     const arr: number[] = [];
     list.reduce((acc, item, i) => {
-      arr[i] = onPreComputeHeight ? acc + onPreComputeHeight(item) : acc;
+      arr[i] = acc + onPreComputeHeight(item);
       return arr[i];
     }, 0);
     return arr;
@@ -76,28 +85,34 @@ export function VirtualListViewport<T extends WithDimensions>({
   const startIndex = findStartIndex(prefix, offset - overscanPixels);
   const endIndex = findEndIndex(prefix, offset, window.innerHeight + overscanPixels)
 
-  const childrenArray = React.Children.toArray(children);
-  const visibleChildren = childrenArray.slice(startIndex, endIndex + 1);
+  let visibleChildren = []
+
+  for (let i = startIndex; i < endIndex + 1; i++) {
+    const item = list[i]
+
+    const height = onPreComputeHeight(item)
+
+    visibleChildren.push(
+      <ComponentProps
+        key={item.id}
+        className='w-full absolute'
+        value={item}
+        index={i}
+        style={{
+          height,
+          top:
+            (prefix[i] ?? 0) - height,
+        }}
+      />
+    )
+  }
 
   const totalHeight = prefix.at(-1) ?? 0
+  console.log('--')
 
   return (
     <div className='relative' style={{ height: `${totalHeight}px` }}>
-      {list.slice(startIndex, endIndex + 1).map((photo, index) => {
-        return (
-          <div
-            key={photo.id}
-            className='absolute w-full'
-            style={{
-              height: onPreComputeHeight(photo),
-              top:
-                (prefix[startIndex + index] ?? 0) - onPreComputeHeight(photo),
-            }}
-          >
-            {visibleChildren[index]}
-          </div>
-        );
-      })}
+      {visibleChildren}
     </div>
   );
 }

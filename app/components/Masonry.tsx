@@ -3,11 +3,7 @@ import { useInView } from "react-intersection-observer";
 import { useDebouncedResize } from "../hooks/useDebouncedResize";
 import { LoadingPhoto } from "./Loading";
 
-function getColumns() {
-  if (typeof window === "undefined") {
-    return 4
-  }
-
+export function getColumns() {
   return Math.round(window.innerWidth / 200)
 }
 
@@ -43,13 +39,12 @@ export function generateImageColumns<T extends ImageWithSize>(
   return columns;
 }
 
-type MasonryColumnProps<T extends ImageWithSize> = {
-  photos: T[];
+type MasonryColumnProps = {
   children?: React.ReactNode;
   onLazy: () => void;
 };
 
-export function MasonryColumn<T extends ImageWithSize>({ photos, children, onLazy }: MasonryColumnProps<T>) {
+export function MasonryColumn({ children, onLazy }: MasonryColumnProps) {
   const { ref, inView } = useInView({ threshold: 0 })
 
   useEffect(() => {
@@ -76,8 +71,8 @@ export function Masonry<T extends ImageWithSize>({ photos, children }: MasonryPr
   const [columnCount, setColumnCount] = useState(getColumns())
 
   const setBodyWidth = () => {
-    document.body.style.setProperty('width', `${window.innerWidth}px`);
-    document.body.style.setProperty('overflow-x', 'hidden');
+    // document.body.style.setProperty('width', `${window.innerWidth}px`);
+    // document.body.style.setProperty('overflow-x', 'hidden');
   };
 
   useDebouncedResize(() => {

@@ -1,3 +1,5 @@
+import { cn } from "../utils/cn";
+
 type Props = {
   children?: React.ReactNode;
   alt: string;
@@ -5,12 +7,13 @@ type Props = {
   width?: number | string;
   height?: number | string;
   color?: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>; // HTMLFigureElement does not exists idk
 
-export function Photo({ children, alt, src, width, height, color }: Props) {
+export function Photo({ children, alt, src, width, className, height, color, ...rest }: Props) {
   return (
-    <div
-      className="relative p-2.5 h-full"
+    <figure
+      className={cn('relative p-2.5 h-full', className)}
+      {...rest}
     >
       <img
         src={src}
@@ -21,6 +24,6 @@ export function Photo({ children, alt, src, width, height, color }: Props) {
         style={color ? { backgroundColor: color } : undefined}
       />
       {children}
-    </div>
+    </figure>
   );
 }

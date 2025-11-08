@@ -1,7 +1,6 @@
 import { render, screen, act } from "@testing-library/react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 import { Masonry, MasonryColumn, generateImageColumns, getRelativeImageHeight } from "../components/Masonry";
-import { Columns3Cog } from "lucide-react";
 
 describe("Masonry utility functions", () => {
   const photos = [

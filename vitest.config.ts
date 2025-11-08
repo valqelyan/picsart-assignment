@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -9,6 +10,11 @@ export default defineConfig({
       enabled: true,
       provider: 'v8',
       include: ['./app/**/*.{ts,tsx}'],
+    },
+  },
+  resolve: {
+    alias: {
+      '~': path.resolve(__dirname, './app')
     },
   },
 })
