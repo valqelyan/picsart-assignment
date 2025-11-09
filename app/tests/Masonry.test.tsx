@@ -15,7 +15,7 @@ describe("Masonry utility functions", () => {
   });
 
   it("generates columns distributing photos to balance column height", () => {
-    const columns = generateImageColumns(photos, 2);
+    const columns = generateImageColumns(photos, 2, 200);
     expect(columns.length).toBe(2);
 
     const flattened = columns.flat();
@@ -67,7 +67,7 @@ describe("Masonry component", () => {
     });
 
     render(
-      <Masonry photos={photos}>
+      <Masonry photos={photos} size={200}>
         {(imageColumns, columnCount) => (
           <>
             {imageColumns.map((column, i) => (
@@ -96,8 +96,8 @@ describe("Masonry component", () => {
     });
 
     render(
-      <Masonry photos={photos}>
-        {(imageColumns, columnCount) => (
+      <Masonry photos={photos} size={200}>
+        {(_, columnCount) => (
           <div data-testid="column-count">{columnCount}</div>
         )}
       </Masonry>

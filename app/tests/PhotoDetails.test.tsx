@@ -25,4 +25,19 @@ describe("PhotoDetails component", () => {
     expect(img.src).toContain("test.jpg");
     expect(img).toHaveClass("rounded-2xl", "mx-auto"); // test CSS classes
   });
+
+  it("renders loading shimmer with correct a11y attributes when loading=true", () => {
+    render(<PhotoDetails loading={true} photographer="John Doe" src="test.jpg" />);
+
+    const region = screen.getByRole("region", { name: /photo details for john doe/i });
+    expect(region).toHaveAttribute("aria-busy", "true");
+    expect(region).toHaveAttribute("aria-live", "polite");
+
+    const shimmer = screen.getByRole("status", { name: /loading photo details/i });
+    expect(shimmer).toBeInTheDocument();
+
+    expect(screen.queryByRole("heading")).toBeNull();
+    expect(screen.queryByText(/by john doe/i)).toBeNull();
+    expect(screen.queryByRole("img")).toBeNull();
+  });
 });

@@ -122,7 +122,7 @@ describe("VirtualListViewport simple test", () => {
   });
 
   it("recalculates image heights correctly on window width resize", async () => {
-    const columnsBefore = getColumns();
+    const columnsBefore = getColumns(200);
 
     render(
       <VirtualListViewport

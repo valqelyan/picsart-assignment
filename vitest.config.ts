@@ -5,11 +5,11 @@ export default defineConfig({
   test: {
     environment: 'happy-dom',
     setupFiles: ['./app/tests/setup.ts'],
-    include: ['./app/tests/*.{test,spec}.{ts,tsx}'],
+    include: ['./app/tests/*.{test,spec}.{ts,tsx}', './app/tests/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       enabled: true,
       provider: 'v8',
-      include: ['./app/**/*.{ts,tsx}'],
+      include: ['./app/**/*.{ts,tsx}',],
     },
   },
   resolve: {

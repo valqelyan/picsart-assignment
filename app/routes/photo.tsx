@@ -3,10 +3,10 @@ import { ChevronLeft } from "lucide-react";
 import { PhotoDetails } from "~/components/PhotoDetails";
 import { usePhotoQuery } from "~/hooks/usePhotoQuery";
 
-export default function ImagePage() {
-  const { photoId } = useParams();
+export default function PhotoPage() {
+  const { photoId } = useParams() as { photoId: string };
 
-  const { data: photo, isLoading, isError } = usePhotoQuery(photoId ?? '');
+  const { data: photo, isLoading, isError } = usePhotoQuery(photoId);
   const navigate = useNavigate()
 
   // Using  manual navigate(-1) because Link can't prevent scroll reset via preventScrollReset unfortunately

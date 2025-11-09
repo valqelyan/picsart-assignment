@@ -14,16 +14,20 @@ export function Photo({ children, alt, loading, src, width, className, height, c
   return (
     <figure
       className={cn('relative p-2.5 h-full', className)}
+      aria-busy={loading}
       {...rest}
     >
-      {loading ? <div className='rounded-2xl w-full h-full shimmer' /> : <img
-        src={src}
-        alt={alt}
-        className="object-cover rounded-2xl w-full h-full"
-        width={width}
-        height={height}
-        style={color ? { backgroundColor: color } : undefined}
-      />}
+      {loading ? <div
+        aria-label="Loading content"
+        className='rounded-2xl w-full h-full shimmer' />
+        : <img
+          src={src}
+          alt={alt}
+          className="object-cover rounded-2xl w-full h-full"
+          width={width}
+          height={height}
+          style={color ? { backgroundColor: color } : undefined}
+        />}
       {children}
     </figure>
   );
