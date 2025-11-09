@@ -28,6 +28,11 @@ export const links: Route.LinksFunction = () => [
     type: "font/ttf",
     crossOrigin: "anonymous",
   },
+  // 'preconnect' link for a third-party domain (like an image CDN)
+  {
+    rel: "preconnect",
+    href: "https://images.pexels.com",
+  },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
