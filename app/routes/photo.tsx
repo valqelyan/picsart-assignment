@@ -12,9 +12,9 @@ export default function PhotoPage() {
   // Using  manual navigate(-1) because Link can't prevent scroll reset via preventScrollReset unfortunately
   const onBack = () => {
     if (window.history.length > 1) {
-      navigate(-1);
+      navigate(-1, { viewTransition: true });
     } else {
-      navigate('/');
+      navigate('/', { viewTransition: true });
     }
   }
 

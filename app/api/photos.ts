@@ -15,11 +15,12 @@ export async function fetchPhotoById(photoId: string | number) {
 }
 
 export async function fetchCuratedPhotos(url?: string, searchTerm?: string, perPage?: number) {
+  const pageSize = perPage || 15
   const endpoint = url
     ? url
     : searchTerm
-      ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(searchTerm)}&per_page=${perPage || 15}`
-      : `https://api.pexels.com/v1/curated?page=1&per_page=15`;
+      ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(searchTerm)}&per_page=${pageSize}`
+      : `https://api.pexels.com/v1/curated?page=1&per_page=${pageSize}`;
 
   const res = await fetch(endpoint, headers);
 

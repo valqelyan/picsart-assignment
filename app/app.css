@@ -72,3 +72,7 @@ input:focus::placeholder {
     background-position: 468px 0
   }
 }
+
+@view-transition {
+  navigation: auto;
+}

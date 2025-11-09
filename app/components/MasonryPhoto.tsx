@@ -17,6 +17,7 @@ export function MasonryPhoto({ value: photo, style, loading, className }: Virtua
       className={className}
     >
       <Link
+        viewTransition
         to={`/photo/${photo.id}`}
         aria-label={`View photo ${photo.id}`}
         className='w-full h-full top-0 left-0 absolute z-3'

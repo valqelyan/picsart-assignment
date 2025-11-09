@@ -5,7 +5,7 @@ import { MasonryPhoto } from "~/components/MasonryPhoto";
 import { usePhotosInfiniteQuery } from "~/hooks/usePhotosInfiniteQuery";
 import { useSearchParams } from "react-router";
 import { loadingData } from '~/api/photos';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function Home() {
   const [{ y }] = useWindowScroll();
@@ -15,9 +15,16 @@ export default function Home() {
   const { data, isSuccess, isError, hasNextPage, isLoading, fetchNextPage } = usePhotosInfiniteQuery(debouncedSearchTerm, 20)
   const photos = data?.pages.map(value => value.photos).flat()
 
-  useEffect(() => {
-    setSearchParams({ q: debouncedSearchTerm })
-  }, [debouncedSearchTerm])
+  const debounceRequests = useRef(false);
+
+  const onLazyLoad = useCallback(() => {
+    if (!debounceRequests.current) {
+      fetchNextPage().then(() => {
+        debounceRequests.current = false;
+      });
+      debounceRequests.current = true;
+    }
+  }, [fetchNextPage]);
 
   return (<div>
     <input
@@ -28,6 +35,7 @@ export default function Home() {
       value={searchTerm}
       onChange={(e) => {
         setSearchTerm(e.target.value)
+        setSearchParams({ q: e.target.value })
       }}
     />
 
@@ -41,9 +49,7 @@ export default function Home() {
 
     <Masonry photos={isLoading ? loadingData : photos ?? []} size={264}>
       {(photoColumns, columns) => photoColumns.map((columnPhotos, index) => (
-        <MasonryColumn key={index} lazyLoad={hasNextPage} onLazy={() => {
-          fetchNextPage()
-        }}>
+        <MasonryColumn key={index} lazyLoad={hasNextPage} onLazy={onLazyLoad}>
           <VirtualListViewport
             list={columnPhotos}
             loading={isLoading}
