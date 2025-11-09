@@ -55,7 +55,7 @@ Clicking a photo opens a detailed view with a larger image, photographer’s nam
 
 ---
 
-This is the URL for a quick preview: 
+This is the URL for a quick preview: [https://pexel.surge.sh](https://pexel.surge.sh)
 
 ## How to Run
 
