@@ -49,4 +49,35 @@ describe('MasonryPhoto', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', `/photo/${mockPhoto.id}`);
   });
+
+  it("sets fetchPriority to high when index < 5", () => {
+    render(
+      <MemoryRouter>
+        <MasonryPhoto value={mockPhoto} index={3} loading={false} className="" style={{}} />
+      </MemoryRouter>
+    );
+    const img = screen.getByAltText(mockPhoto.alt);
+    expect(img).toHaveAttribute("fetchPriority", "high");
+  });
+
+  it("does not set fetchPriority when index >= 5", () => {
+    render(
+      <MemoryRouter>
+        <MasonryPhoto value={mockPhoto} index={5} loading={false} className="" style={{}} />
+      </MemoryRouter>
+    );
+    const img = screen.getByAltText(mockPhoto.alt);
+    expect(img).not.toHaveAttribute("fetchPriority");
+  });
+
+  it("does not apply backgroundColor style when avg_color is not set", () => {
+    render(
+      <MemoryRouter>
+        <MasonryPhoto value={{ ...mockPhoto, avg_color: '' }} index={0} loading={false} className="" style={{}} />
+      </MemoryRouter>
+    );
+    const img = screen.getByAltText(mockPhoto.alt);
+
+    expect(img).not.toHaveAttribute("style");
+  });
 });

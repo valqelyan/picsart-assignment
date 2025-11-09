@@ -7,37 +7,35 @@ describe("Photo component", () => {
   const alt = "Example Image";
 
   it("renders an img with correct src and alt", () => {
-    render(<Photo src={src} alt={alt} />);
+    render(<Photo>
+      <img src={src} alt={alt} />
+    </Photo>);
     const img = screen.getByAltText(alt);
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute("src", src);
   });
 
-  it("renders children inside the container", () => {
+  it("passes extra className and other props to figure", () => {
+    render(<Photo className="custom-class" data-testid="photo" />);
+    const figure = screen.getByTestId("photo");
+    expect(figure).toHaveClass("custom-class");
+    expect(figure.tagName).toBe("FIGURE");
+  });
+
+  it("does not render loading div when loading is false", () => {
     render(
-      <Photo src={src} alt={alt}>
-        <span data-testid="child">Child</span>
+      <Photo loading={false}>
+        <span data-testid="child">Child Content</span>
       </Photo>
     );
+    expect(screen.queryByLabelText("Loading content")).toBeNull();
     expect(screen.getByTestId("child")).toBeInTheDocument();
   });
 
-  it("applies width and height props to the img element", () => {
-    render(<Photo src={src} alt={alt} width={300} height="200" />);
-    const img = screen.getByAltText(alt);
-    expect(img).toHaveAttribute("width", "300");
-    expect(img).toHaveAttribute("height", "200");
-  });
-
-  it("applies backgroundColor style when color prop is provided", () => {
-    render(<Photo src={src} alt={alt} color="red" />);
-    const img = screen.getByAltText(alt);
-    expect(img).toHaveStyle({ backgroundColor: "red" });
-  });
-
-  it("does not apply backgroundColor style when color prop is not provided", () => {
-    render(<Photo src={src} alt={alt} />);
-    const img = screen.getByAltText(alt);
-    expect(img).not.toHaveStyle({ backgroundColor: "red" });
+  it("renders loading shimmer div when loading is true", () => {
+    render(<Photo loading={true} />);
+    const loadingDiv = screen.getByLabelText("Loading content");
+    expect(loadingDiv).toBeInTheDocument();
+    expect(loadingDiv).toHaveClass("shimmer");
   });
 });
