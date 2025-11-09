@@ -1,87 +1,81 @@
-# Welcome to React Router!
+### Optimized Virtualized Masonry Grid with Detailed Photo View
+***Would be awesome to use React Compiler, but focused on hooks as required.***
 
-A modern, production-ready template for building full-stack React applications using React Router.
+## Overview
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
-
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
-
-```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
-npm run dev
-```
-
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
-```bash
-npm run build
-```
-
-## Deployment
-
-### Docker Deployment
-
-To build and run using Docker:
-
-```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
-```
-
-The containerized application can be deployed to any platform that supports Docker, including:
-
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
-
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+This project is a Single Page Application (SPA) built with React and TypeScript that showcases an optimized, virtualized masonry grid layout displaying photos fetched from the Pexels API. It features a detailed photo view with additional information and supports infinite scroll and search functionality.
 
 ---
 
-Built with ❤️ using React Router.
+## Features
+
+- **Virtualized Masonry Grid Layout**  
+I implemented the virtualized masonry grid **entirely from scratch**, without using any AI or third-party virtualization/layout libraries. I am familiar with various virtualization techniques and have built multiple similar components in the past. My approach was inspired by the patterns used in projects like [preact-virtual-list](https://github.com/developit/preact-virtual-list), which was the first virtualization library I came across. This foundation helped me understand the core concepts of windowing and virtualization, which I adapted and extended to create a performant, responsive masonry grid that meets the assignment requirements.
+
+
+- **Detailed Photo View**  
+Clicking a photo opens a detailed view with a larger image, photographer’s name, title, description, and date. A back button returns to the masonry grid, preserving scroll position for a smooth user experience.
+
+
+- **Infinite Scroll**  
+  Automatically loads more photos as the user scrolls down.
+
+- **Search Functionality (Bonus)**  
+  Users can search photos by keywords; the masonry grid updates dynamically based on search results.
+
+- **Responsive Design**  
+  The layout adjusts gracefully across devices and screen sizes.
+
+- **Error Boundaries**  
+  Graceful handling of runtime errors with user-friendly fallback UI.
+
+---
+
+### Technologies Used
+
+- React  
+- React Router v7  
+- React Query  
+- TypeScript  
+- 1-2 hooks from [@uidotdev/usehooks](https://github.com/uidotdev/usehooks)  
+- Styled-components (CSS-in-JS)  
+- Pexels API  
+
+---
+
+## Performance Optimizations
+
+- **Virtualization:** Render only visible photos to reduce DOM nodes and boost performance.  
+- **Memoization:** Used `useMemo` and `useCallback` judiciously to avoid unnecessary re-renders.  
+- **Image Optimization:** Sized images properly and leveraged browser caching.  
+- **Lightweight Bundle:** Avoided heavy third-party libraries for smaller bundle size.  
+- **Infinite Scroll:** Incremental data loading to reduce initial load.  
+- **Performance:** Improved web vitals and scores based on Lighthouse audits.
+
+
+---
+
+This is the URL for a quick preview: 
+
+## How to Run
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/valqelyan/picsart-assignment.git
+   cd picsart-assignment
+
+2. Install dependencies:
+    ```bash
+    npm i
+    ```
+3. To build and run the production version:
+    ```bash
+    npm run build && npm start
+    ```
+
+
+## Unit tests are included and can be run with:
+```bash
+npm test
+```
