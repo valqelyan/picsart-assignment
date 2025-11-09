@@ -5,7 +5,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "serve ./build/client",
+    "start": "serve -s ./build/client",
     "test": "vitest",
     "typecheck": "react-router typegen && tsc",
     "coverage": "vitest run --coverage"
