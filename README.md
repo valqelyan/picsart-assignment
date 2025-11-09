@@ -59,11 +59,19 @@ This is the URL for a quick preview:
 
 ## How to Run
 
+
 1. Clone the repository:
 
    ```bash
    git clone https://github.com/valqelyan/picsart-assignment.git
    cd picsart-assignment
+
+  This project requires a Pexels API key.  
+  Create a `.env` file in the project root with:
+
+  ```bash
+  VITE_PEXELS_API=<YOUR_API_KEY_HERE>
+  ```
 
 2. Install dependencies:
     ```bash
