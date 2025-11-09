@@ -41,16 +41,18 @@ export function generateImageColumns<T extends ImageWithSize>(
 }
 
 type MasonryColumnProps = {
-  children?: React.ReactNode;
+  children?: React.ReactNode
   lazyLoad?: boolean
-  onLazy: () => void;
+  size: number
+  onLazy: () => void
 };
 
-export function MasonryColumn({ children, lazyLoad, onLazy }: MasonryColumnProps) {
+export function MasonryColumn({ children, lazyLoad, onLazy, size }: MasonryColumnProps) {
   const ref = useInView(onLazy)
 
   return <div
-    className="flex flex-col grow shrink basis-[200px] min-w-0 gap-0"
+    className="flex flex-col grow shrink min-w-0 gap-0"
+    style={{ flexBasis: size }}
   >
     {children}
     {lazyLoad && <LoadingPhoto ref={ref} />}
