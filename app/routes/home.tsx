@@ -33,6 +33,8 @@ export default function Home() {
       type="text"
       className='p-5 text-4xl w-full'
       placeholder="Search..."
+      name='search'
+      autoComplete='off'
       aria-label="Search photos"
       value={searchTerm}
       onChange={(e) => {
