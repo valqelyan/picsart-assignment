@@ -41,7 +41,7 @@ Clicking a photo opens a detailed view with a larger image, photographer’s nam
 - Tailwindcss
 - Pexels API 
 
-⚠️ **I chose TailwindCSS instead of CSS-in-JS. While CSS-in-JS offers benefits like scoped styles and dynamic theming, it can sometimes lead to larger bundle sizes and runtime overhead.**
+⚠️ **I started with the Vite React Router template, which includes Tailwind, and since Vite doesn’t inline CSS, I stuck with Tailwind instead of CSS-in-JS. Otherwise, I’d use Linaria for compile-time styling. Hope this choice is fine.**
 **Hopefully, this won’t be judged too harshly.**
 
 ---
