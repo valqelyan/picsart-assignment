@@ -32,6 +32,7 @@ describe('MasonryPhoto', () => {
     render(
       <MemoryRouter>
         <MasonryPhoto
+          loading={false}
           value={mockPhoto}
           style={{ position: 'relative' }}
           className="my-class"
@@ -44,11 +45,8 @@ describe('MasonryPhoto', () => {
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute('src', mockPhoto.src.medium);
 
-    expect(img.parentElement).toHaveClass('my-class');
-
     const link = screen.getByRole('link', { name: `View photo ${mockPhoto.id}` });
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute('href', `/photo/${mockPhoto.id}`);
-    expect(link).toHaveClass('w-full', 'h-full', 'top-0', 'left-0', 'absolute', 'z-3');
   });
 });

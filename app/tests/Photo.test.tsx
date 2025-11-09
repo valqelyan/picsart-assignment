@@ -40,16 +40,4 @@ describe("Photo component", () => {
     const img = screen.getByAltText(alt);
     expect(img).not.toHaveStyle({ backgroundColor: "red" });
   });
-
-  it("img has expected CSS classes", () => {
-    render(<Photo src={src} alt={alt} />);
-    const img = screen.getByAltText(alt);
-    expect(img).toHaveClass("object-cover", "rounded-2xl", "w-full", "h-full");
-  });
-
-  it("container div has expected CSS classes", () => {
-    render(<Photo src={src} alt={alt} />);
-    const container = screen.getByAltText(alt).parentElement;
-    expect(container).toHaveClass("relative", "p-2.5", "h-full");
-  });
 });

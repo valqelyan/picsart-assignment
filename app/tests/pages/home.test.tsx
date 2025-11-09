@@ -152,7 +152,6 @@ describe('Home', () => {
     (usePhotosInfiniteQuery as any).mockImplementation(() => queryState);
 
     await waitFor(() => {
-      screen.debug()
       response.photos.forEach(({ alt }) => {
         expect(screen.getByAltText(alt)).toBeInTheDocument();
       })
