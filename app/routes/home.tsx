@@ -5,7 +5,7 @@ import { MasonryPhoto } from "~/components/MasonryPhoto";
 import { usePhotosInfiniteQuery } from "~/hooks/usePhotosInfiniteQuery";
 import { useSearchParams } from "react-router";
 import { loadingData } from '~/api/photos';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 export default function Home() {
   const [{ y }] = useWindowScroll();

@@ -92,7 +92,7 @@ describe('PhotoPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /go back/i }));
 
-    expect(mockedUsedNavigate).toHaveBeenCalledWith('/');
+    expect(mockedUsedNavigate).toHaveBeenCalledWith('/', { viewTransition: true });
   });
 
   it('calls navigate(-1) if history.length > 1', () => {
@@ -120,6 +120,6 @@ describe('PhotoPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /go back/i }));
 
-    expect(mockedUsedNavigate).toHaveBeenCalledWith(-1);
+    expect(mockedUsedNavigate).toHaveBeenCalledWith(-1, { viewTransition: true });
   });
 });

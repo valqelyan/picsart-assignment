@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 import { Masonry, MasonryColumn, generateImageColumns, getRelativeImageHeight } from "../components/Masonry";
 
@@ -23,19 +23,29 @@ describe("Masonry utility functions", () => {
   });
 });
 
-vi.mock("react-intersection-observer", () => ({
-  useInView: () => ({
-    ref: vi.fn(),
-    inView: true,  // simulate element is visible
-  }),
+// vi.mock("react-intersection-observer", () => ({
+//   useInView: () => ({
+//     ref: vi.fn(),
+//     inView: true,  // simulate element is visible
+//   }),
+// }));
+
+// Mock the useIntersectionObserver hook
+vi.mock("@uidotdev/usehooks", () => ({
+  useIntersectionObserver: () => {
+    return [
+      { current: null }, // ref, not used in test
+      { isIntersecting: true } // immediately visible
+    ];
+  },
 }));
 
 describe("MasonryColumn component", () => {
-  it("calls onLazy when the element is visible (inView=true)", () => {
+  it("calls onLazy when the element is visible (inView=true)", async () => {
     const onLazy = vi.fn();
 
     render(
-      <MasonryColumn photos={[]} onLazy={onLazy}>
+      <MasonryColumn onLazy={onLazy} lazyLoad={true}>
         <div data-testid="child">Child content</div>
       </MasonryColumn>
     );

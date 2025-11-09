@@ -1,7 +1,7 @@
 import { useIntersectionObserver } from "@uidotdev/usehooks";
 import { useEffect, useRef } from "react";
 
-export function useInView(onVisible) {
+export function useInView(onVisible: () => void) {
   const [ref, entry] = useIntersectionObserver({
     threshold: 0,
     root: null,

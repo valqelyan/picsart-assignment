@@ -55,7 +55,6 @@ describe('Home', () => {
 
 
   it('loads and displays photos after typing', async () => {
-    // Initial state: no data, not loading
     let queryState = {
       data: null,
       isSuccess: false,
@@ -65,18 +64,12 @@ describe('Home', () => {
       fetchNextPage: fetchNextPageMock,
     };
 
-    // Mock implementation will return current state dynamically
     (usePhotosInfiniteQuery as any).mockImplementation(() => queryState);
 
     renderWithRoute();
 
     const input = screen.getByLabelText('Search photos');
 
-    await act(async () => {
-      fireEvent.change(input, { target: { value: 'cats' } });
-    })
-
-    // After typing, simulate loading state
     queryState = {
       ...queryState,
       isLoading: true,
@@ -85,9 +78,11 @@ describe('Home', () => {
 
     (usePhotosInfiniteQuery as any).mockImplementation(() => queryState);
 
-    await waitFor(() => {
-      expect(screen.getAllByLabelText(/loading content/i).length).toBeGreaterThan(0);
-    }, { timeout: 500 }); // 500ms to cover debounce + state update
+    await act(async () => {
+      fireEvent.change(input, { target: { value: 'cats' } });
+    });
+
+    expect(screen.getAllByLabelText("Loading content").length).toBeGreaterThan(0);
 
     const response = {
       "page": 1,
@@ -157,13 +152,10 @@ describe('Home', () => {
     (usePhotosInfiniteQuery as any).mockImplementation(() => queryState);
 
     await waitFor(() => {
+      screen.debug()
       response.photos.forEach(({ alt }) => {
         expect(screen.getByAltText(alt)).toBeInTheDocument();
       })
     });
-  })
+  });
 });
-
-
-
-
