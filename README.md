@@ -38,8 +38,11 @@ Clicking a photo opens a detailed view with a larger image, photographer’s nam
 - React Query  
 - TypeScript  
 - 1-2 hooks from [@uidotdev/usehooks](https://github.com/uidotdev/usehooks)  
-- Styled-components (CSS-in-JS)  
-- Pexels API  
+- Tailwindcss
+- Pexels API 
+
+⚠️ **I chose TailwindCSS instead of CSS-in-JS. While CSS-in-JS offers benefits like scoped styles and dynamic theming, it can sometimes lead to larger bundle sizes and runtime overhead.**
+**Hopefully, this won’t be judged too harshly.**
 
 ---
 
