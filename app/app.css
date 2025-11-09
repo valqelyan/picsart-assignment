@@ -50,8 +50,8 @@ input:focus::placeholder {
 /* shimmer */
 .shimmer {
   animation: placeholder-shimmer .8s linear infinite forwards;
-  background: #d8d8d8;
-  background-image: linear-gradient(90deg, #d8d8d8 0, #bdbdbd, #d8d8d8 40%, #d8d8d8);
+  background: #101931;
+  background-image: linear-gradient(90deg, #101931 0, #030712, #101931 40%, #101931);
   background-repeat: no-repeat;
   background-size: 800px 100%;
   color: transparent;

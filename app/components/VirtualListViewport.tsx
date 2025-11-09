@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedResize } from "../hooks/useDebouncedResize";
 
 type WithDimensions = {
@@ -10,16 +10,18 @@ type WithDimensions = {
 export type VirtualizedComponentProps<T> = {
   className: string
   style: React.CSSProperties
+  loading: boolean
   value: T
   index: number
 }
 
 type Props<T extends WithDimensions> = {
-  list: T[];
+  list: T[]
+  loading?: boolean
   onPreComputeHeight: (item: T) => number
   component: (
     props: VirtualizedComponentProps<T>
-  ) => React.ReactElement;
+  ) => React.ReactElement
   overscanPixels?: number
   offset: number
 };
@@ -65,11 +67,19 @@ export function VirtualListViewport<T extends WithDimensions>({
   component: ComponentProps,
   onPreComputeHeight,
   overscanPixels = 300,
+  loading = false,
   offset,
 }: Props<T>) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [offsetTop, setOffsetTop] = useState(0);
+  const element = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    setOffsetTop(element.current?.offsetTop || 0)
+  }, [])
 
   useDebouncedResize(() => {
+    setOffsetTop(element.current?.offsetTop || 0)
     setWindowWidth(window.innerWidth);
   }, 100);
 
@@ -82,8 +92,8 @@ export function VirtualListViewport<T extends WithDimensions>({
     return arr;
   }, [list, onPreComputeHeight, windowWidth]);
 
-  const startIndex = findStartIndex(prefix, offset - overscanPixels);
-  const endIndex = findEndIndex(prefix, offset, window.innerHeight + overscanPixels)
+  const startIndex = findStartIndex(prefix, offset - offsetTop - overscanPixels);
+  const endIndex = findEndIndex(prefix, offset, window.innerHeight - offsetTop + overscanPixels)
 
   let visibleChildren = []
 
@@ -98,6 +108,7 @@ export function VirtualListViewport<T extends WithDimensions>({
         className='w-full absolute'
         value={item}
         index={i}
+        loading={loading}
         style={{
           height,
           top:
@@ -110,7 +121,7 @@ export function VirtualListViewport<T extends WithDimensions>({
   const totalHeight = prefix.at(-1) ?? 0
 
   return (
-    <div className='relative' style={{ height: `${totalHeight}px` }}>
+    <div className='relative' style={{ height: `${totalHeight}px` }} ref={element}>
       {visibleChildren}
     </div>
   );

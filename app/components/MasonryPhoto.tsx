@@ -3,12 +3,13 @@ import { Link } from "react-router";
 import { type VirtualizedComponentProps } from '~/components/VirtualListViewport'
 import type { Photo as PhotoAPI } from '~/types/photo';
 
-export function MasonryPhoto({ value: photo, style, className }: VirtualizedComponentProps<PhotoAPI>) {
+export function MasonryPhoto({ value: photo, style, loading, className }: VirtualizedComponentProps<PhotoAPI>) {
   return (
     <Photo
+      loading={loading}
       key={photo.id}
       color={photo.avg_color}
-      src={photo.src.medium}
+      src={photo.src?.medium}
       alt={photo.alt}
       width={photo.width}
       height={photo.height}
