@@ -6,7 +6,7 @@ import { usePhotoQuery } from "~/hooks/usePhotoQuery";
 export default function ImagePage() {
   const { photoId } = useParams();
 
-  const { data: photo, isLoading, error } = usePhotoQuery(photoId ?? '');
+  const { data: photo, isLoading, isError } = usePhotoQuery(photoId ?? '');
   const navigate = useNavigate()
 
   // Using  manual navigate(-1) because Link can't prevent scroll reset via preventScrollReset unfortunately
@@ -18,8 +18,11 @@ export default function ImagePage() {
     }
   }
 
-  if (isLoading) return <div>Loading photo...</div>;
-  if (error) return <div>Error loading photo</div>;
+  if (isError) {
+    return (<h2 className='text-4xl p-5 font-playfair text-center text-[#999]'>
+      Something went wrong. Please try again.
+    </h2>)
+  }
 
   return (
     <div
@@ -31,8 +34,10 @@ export default function ImagePage() {
       </button>
 
       <PhotoDetails
-        photographer={photo.photographer}
-        src={photo.src.large}
+        className='mt-4'
+        photographer={photo?.photographer}
+        src={photo?.src?.large}
+        loading={isLoading}
       />
     </div>
   );
