@@ -26,6 +26,7 @@ type Props<T extends WithDimensions> = {
   offset: number
 };
 
+// Finds the first visible index using binary search on cumulative heights
 function findStartIndex(prefix: number[], offset: number): number {
   let low = 0,
     high = prefix.length - 1;
@@ -37,6 +38,7 @@ function findStartIndex(prefix: number[], offset: number): number {
   return low;
 }
 
+// Finds the last visible index using binary search on cumulative heights
 function findEndIndex(
   prefix: number[],
   offset: number,
