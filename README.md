@@ -10,8 +10,7 @@ This project is a Single Page Application (SPA) built with React and TypeScript 
 ## Features
 
 - **Virtualized Masonry Grid Layout**  
-I implemented the virtualized masonry grid **entirely from scratch**, without using any AI or third-party virtualization/layout libraries. I am familiar with various virtualization techniques and have built multiple similar components in the past. My approach was inspired by the patterns used in projects like [preact-virtual-list](https://github.com/developit/preact-virtual-list), which was the first virtualization library I came across. This foundation helped me understand the core concepts of windowing and virtualization, which I adapted and extended to create a performant, responsive masonry grid that meets the assignment requirements.
-
+I implemented the virtualized masonry grid **entirely from scratch**, without using any AI or third-party virtualization/layout libraries. I am familiar with various virtualization techniques and have built multiple similar components in the past. My approach was inspired by the patterns used in projects like [preact-virtual-list](https://github.com/developit/preact-virtual-list), which was the first virtualization library I came across. This foundation helped me understand the core concepts of windowing and virtualization, which I adapted and extended to create a performant, responsive masonry grid that meets the assignment requirements. Tried using binary search instead of linear search to find startIndex and endIndex for better performance.
 
 - **Detailed Photo View**  
 Clicking a photo opens a detailed view with a larger image, photographer’s name, title, description, and date. A back button returns to the masonry grid, preserving scroll position for a smooth user experience.
