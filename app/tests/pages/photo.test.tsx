@@ -120,6 +120,6 @@ describe('PhotoPage', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /go back/i }));
 
-    expect(mockedUsedNavigate).toHaveBeenCalledWith(-1, { viewTransition: true });
+    expect(mockedUsedNavigate).toHaveBeenCalledWith(-1);
   });
 });
