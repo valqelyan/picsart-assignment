@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedResize } from "../hooks/useDebouncedResize";
 
 type WithDimensions = {
-  id: string | number;
-  width: number;
-  height: number;
+  id: string | number
+  width: number
+  height: number
 };
 
 export type VirtualizedComponentProps<T> = {

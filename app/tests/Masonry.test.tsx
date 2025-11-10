@@ -45,7 +45,7 @@ describe("MasonryColumn component", () => {
     const onLazy = vi.fn();
 
     render(
-      <MasonryColumn onLazy={onLazy} lazyLoad={true}>
+      <MasonryColumn onLazy={onLazy} lazyLoad={true} size={200}>
         <div data-testid="child">Child content</div>
       </MasonryColumn>
     );

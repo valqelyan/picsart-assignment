@@ -1,10 +1,10 @@
 import { cn } from "~/utils/cn";
 
 type Props = {
-  photographer: string;
-  src: string;
-  loading?: boolean;
-  className?: string;
+  photographer: string
+  src: string
+  loading?: boolean
+  className?: string
 };
 
 export function PhotoDetails({ loading, className, photographer, src }: Props) {

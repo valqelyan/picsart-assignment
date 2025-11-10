@@ -8,8 +8,8 @@ export function getColumns(fixedSize: number) {
 }
 
 type ImageWithSize = {
-  width: number;
-  height: number;
+  width: number
+  height: number
 };
 
 export function getRelativeImageHeight(image: ImageWithSize, targetWidth: number): number {
@@ -60,9 +60,9 @@ export function MasonryColumn({ children, lazyLoad, onLazy, size }: MasonryColum
 }
 
 type MasonryProps<T extends ImageWithSize> = {
-  photos: T[];
+  photos: T[]
   size: number
-  children: (imageColumns: T[][], columnCount: number) => React.ReactNode;
+  children: (imageColumns: T[][], columnCount: number) => React.ReactNode
 };
 
 export function Masonry<T extends ImageWithSize>({ photos, size, children }: MasonryProps<T>) {

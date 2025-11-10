@@ -1,16 +1,13 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchCuratedPhotos } from '~/api/photos';
-import type { PexelsResponse } from '~/types/photo';
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { fetchCuratedPhotos } from '~/api/photos'
+import type { PexelsResponse } from '~/types/photo'
 
 export function usePhotosInfiniteQuery(debouncedSearchTerm: string, perPage: number) {
   return useInfiniteQuery<PexelsResponse>({
     queryKey: ['pexelsCuratedPhotos', debouncedSearchTerm],
-    queryFn: ({ pageParam = null }) => {
-      return fetchCuratedPhotos(pageParam, debouncedSearchTerm, perPage)
-    },
+    queryFn: ({ pageParam }) =>
+      fetchCuratedPhotos(pageParam as string | undefined, debouncedSearchTerm, perPage),
     initialPageParam: null,
-    getNextPageParam: (lastPage) => {
-      return lastPage.next_page ?? undefined
-    },
-  });
+    getNextPageParam: (lastPage) => lastPage.next_page ?? undefined,
+  })
 }

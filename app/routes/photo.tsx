@@ -12,7 +12,7 @@ export default function PhotoPage() {
   // Using  manual navigate(-1) because Link can't prevent scroll reset via preventScrollReset unfortunately
   const onBack = () => {
     if (window.history.length > 1) {
-      navigate(-1, { viewTransition: true });
+      navigate(-1);
     } else {
       navigate('/', { viewTransition: true });
     }
@@ -28,7 +28,7 @@ export default function PhotoPage() {
     <div
       className='w-full max-w-[600px] px-4 items-start mt-4 flex flex-col mx-auto'
     >
-      <button onClick={onBack} className='inline-flex items-center justify-center' aria-label="Go back">
+      <button onClick={onBack} className='cursor-pointer inline-flex items-center justify-center' aria-label="Go back">
         <ChevronLeft size={22} />
         Back
       </button>

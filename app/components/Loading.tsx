@@ -1,7 +1,7 @@
-import React, { type Ref } from "react";
+import { type Ref } from "react";
 
 type LoadingPhotoProps = {
-  ref?: Ref<HTMLDivElement>;
+  ref?: Ref<HTMLDivElement>
 };
 
 export function LoadingPhoto({ ref }: LoadingPhotoProps) {
